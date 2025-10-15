@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UberFinance - Controle Financeiro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+            background: #2c3e50;
+            min-height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+
+        
+        .card-custom {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            background: white;
+            margin-bottom: 20px;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(45deg, #34495e, #2c3e50);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 73, 94, 0.4);
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+        }
+        
+        .calendar-day {
+            min-height: 100px;
+            border: 1px solid #e9ecef;
+            padding: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .calendar-day:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .conta-pagar {
+            background-color: #ffe6e6;
+            color: #d63384;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin: 1px 0;
+            display: block;
+        }
+        
+        .conta-receber {
+            background-color: #e6f7e6;
+            color: #198754;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin: 1px 0;
+            display: block;
+        }
+        
+        .conta-paga {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin: 1px 0;
+            display: block;
+            text-decoration: line-through;
+        }
+        
+        .conta-atrasada {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin: 1px 0;
+            display: block;
+            border: 2px solid #dc3545;
+            animation: pulse 2s infinite;
+        }
+        
+        .conta-uber {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin: 1px 0;
+            display: block;
+            border: 1px solid #1976d2;
+            font-weight: bold;
+        }
+        
+        .calendar-day-uber {
+            background-color: #e3f2fd !important;
+            border: 2px solid #1976d2 !important;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .calendar-day {
+            cursor: pointer;
+        }
+        
+        .calendar-day:hover {
+            background-color: #e3f2fd !important;
+        }
+        
+        .calendar-day.selected {
+            background-color: #bbdefb !important;
+        }
+        
+        .meta-alert {
+            background: linear-gradient(45deg, #e74c3c, #f39c12);
+            color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .dashboard-card {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+        }
+        
+        .form-control:focus {
+            border-color: #34495e;
+            box-shadow: 0 0 0 0.2rem rgba(52, 73, 94, 0.25);
+        }
+        
+        .nav-pills .nav-link {
+            border-radius: 25px;
+            margin: 0 5px;
+            font-weight: 600;
+        }
+        
+        .nav-pills .nav-link {
+            color: #34495e;
+        }
+        
+        .nav-pills .nav-link.active {
+            background: linear-gradient(45deg, #34495e, #2c3e50);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Navbar Superior -->
+        <nav class="navbar navbar-expand-lg navbar-dark mb-4" style="background: linear-gradient(45deg, #34495e, #2c3e50); border-radius: 15px;">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold" href="#"><i class="bi bi-car-front"></i> UberFinance</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active text-white" onclick="mostrarAba('dashboard')" style="cursor: pointer;"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" onclick="mostrarAba('lancamentos')" style="cursor: pointer;"><i class="bi bi-plus-circle"></i> Lançar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" onclick="mostrarAba('diario')" style="cursor: pointer;"><i class="bi bi-calendar-day"></i> Diário</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" onclick="mostrarAba('calendario')" style="cursor: pointer;"><i class="bi bi-calendar3"></i> Calendário</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" onclick="mostrarAba('configuracoes')" style="cursor: pointer;"><i class="bi bi-gear"></i> Configurações</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="tab-content">
+            <!-- Dashboard -->
+            <div class="tab-pane fade show active" id="dashboard">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="meta-alert" id="metaAlert">
+                            <i class="bi bi-target"></i> Meta para amanhã: R$ <span id="metaDiaria">0,00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 mb-3">
+                        <div class="card card-custom">
+                            <div class="card-header bg-transparent">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5><i class="bi bi-speedometer2"></i> Dashboard Financeiro</h5>
+                                    <select class="form-select w-auto" id="mesDashboard" onchange="atualizarDashboard()">
+                                        <option value="">Selecione o mês...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-12">
+                        <div class="dashboard-card">
+                            <h5><i class="bi bi-wallet2"></i> Saldo Atual</h5>
+                            <h2 id="saldoAtual">R$ 0,00</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-12">
+                        <div class="dashboard-card">
+                            <h5><i class="bi bi-calendar-month"></i> Faturamento Mês</h5>
+                            <h2 id="faturamentoMes">R$ 0,00</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-12">
+                        <div class="dashboard-card">
+                            <h5><i class="bi bi-piggy-bank"></i> Lucro Líquido</h5>
+                            <h2 id="lucroLiquido">R$ 0,00</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-12">
+                        <div class="dashboard-card">
+                            <h5><i class="bi bi-exclamation-triangle"></i> Contas Pendentes</h5>
+                            <h2 id="contasPendentes">R$ 0,00</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-12">
+                        <div class="dashboard-card">
+                            <h5><i class="bi bi-speedometer"></i> Custo por Km</h5>
+                            <h2 id="custoPorKm">R$ 0,00</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-12">
+                        <div class="dashboard-card">
+                            <h5><i class="bi bi-geo-alt"></i> Total Km Mês</h5>
+                            <h2 id="totalKmMes">0 km</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12" id="alertaAtrasadas" style="display: none;">
+                        <div class="alert alert-danger">
+                            <h6><i class="bi bi-exclamation-triangle-fill"></i> Atenção! Contas em Atraso</h6>
+                            <div id="listaAtrasadas"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Relatório Detalhado -->
+                    <div class="col-12" id="relatorioDetalhado">
+                        <div class="card card-custom">
+                            <div class="card-header bg-transparent">
+                                <h6><i class="bi bi-graph-up"></i> Relatório Detalhado</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="relatorioContent">
+                                    <div class="text-center text-muted">
+                                        <i class="bi bi-bar-chart fs-1"></i>
+                                        <p>Selecione um mês para ver o relatório detalhado</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lançamentos -->
+            <div class="tab-pane fade" id="lancamentos">
+                <div class="card card-custom">
+                    <div class="card-header bg-transparent">
+                        <h5><i class="bi bi-plus-circle"></i> Lançar Conta</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="formConta">
+                            <div class="mb-3">
+                                <label class="form-label">Tipo</label>
+                                <select class="form-select" id="tipoConta" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="pagar">Conta a Pagar</option>
+                                    <option value="receber">Conta a Receber</option>
+                                    <option value="gasto">Gasto Realizado</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Descrição</label>
+                                <input type="text" class="form-control" id="descricaoConta" required>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-6">
+                                    <label class="form-label">Valor (R$)</label>
+                                    <input type="number" class="form-control" id="valorConta" step="0.01" required>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Data</label>
+                                    <input type="date" class="form-control" id="dataConta" required>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary-custom w-100 mt-3">
+                                <i class="bi bi-check-circle"></i> Lançar Conta
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diário Uber -->
+            <div class="tab-pane fade" id="diario">
+                <div class="card card-custom">
+                    <div class="card-header bg-transparent">
+                        <h5><i class="bi bi-calendar-day"></i> Registro Diário</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="formDiario">
+                            <div class="mb-3">
+                                <label class="form-label">Data</label>
+                                <input type="date" class="form-control" id="dataDiario" required>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4 col-6">
+                                    <label class="form-label">Faturamento Uber (R$)</label>
+                                    <input type="number" class="form-control" id="faturamentoDiario" step="0.01" required>
+                                </div>
+                                <div class="col-md-4 col-6">
+                                    <label class="form-label">Gasto Gasolina (R$)</label>
+                                    <input type="number" class="form-control" id="gasolinaDiario" step="0.01" required>
+                                </div>
+                                <div class="col-md-4 col-12">
+                                    <label class="form-label">Km Rodados</label>
+                                    <input type="number" class="form-control" id="kmRodados" step="0.1" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Observações</label>
+                                <textarea class="form-control" id="observacoesDiario" rows="3"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary-custom w-100">
+                                <i class="bi bi-save"></i> Salvar Registro
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Histórico Diário -->
+                <div class="card card-custom">
+                    <div class="card-header bg-transparent">
+                        <h6>Últimos Registros</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="historicoDiario"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calendário -->
+            <div class="tab-pane fade" id="calendario">
+                <div class="card card-custom">
+                    <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                        <button class="btn btn-outline-primary" onclick="mudarMes(-1)">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <h5 id="mesAnoCalendario"></h5>
+                        <button class="btn btn-outline-primary" onclick="mudarMes(1)">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="text-center">Dom</th>
+                                        <th class="text-center">Seg</th>
+                                        <th class="text-center">Ter</th>
+                                        <th class="text-center">Qua</th>
+                                        <th class="text-center">Qui</th>
+                                        <th class="text-center">Sex</th>
+                                        <th class="text-center">Sáb</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="calendarioBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lista de Contas do Dia -->
+                <div class="card card-custom" id="contasDoDia" style="display: none;">
+                    <div class="card-header bg-transparent">
+                        <h6><i class="bi bi-calendar-check"></i> Contas do Dia <span id="dataSelecionada"></span></h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="listaContasDia"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configurações -->
+            <div class="tab-pane fade" id="configuracoes">
+                <div class="card card-custom">
+                    <div class="card-header bg-transparent">
+                        <h5><i class="bi bi-gear"></i> Configurações do Sistema</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="formConfiguracoes">
+                            <div class="mb-4">
+                                <h6><i class="bi bi-target"></i> Meta Diária</h6>
+                                <div class="mb-3">
+                                    <label class="form-label">Valor mínimo por dia de trabalho (R$)</label>
+                                    <input type="number" class="form-control" id="metaDiariaMinima" step="0.01" placeholder="Ex: 150.00">
+                                    <small class="text-muted">Este valor será usado para calcular sua meta mensal baseada nos dias de trabalho</small>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6><i class="bi bi-calendar-week"></i> Dias de Trabalho</h6>
+                                <p class="text-muted mb-3">Selecione os dias da semana que você trabalha regularmente (para cálculo da meta mensal)</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="domingo" value="0">
+                                            <label class="form-check-label" for="domingo">Domingo</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="segunda" value="1">
+                                            <label class="form-check-label" for="segunda">Segunda-feira</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="terca" value="2">
+                                            <label class="form-check-label" for="terca">Terça-feira</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="quarta" value="3">
+                                            <label class="form-check-label" for="quarta">Quarta-feira</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="quinta" value="4">
+                                            <label class="form-check-label" for="quinta">Quinta-feira</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="sexta" value="5">
+                                            <label class="form-check-label" for="sexta">Sexta-feira</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="sabado" value="6">
+                                            <label class="form-check-label" for="sabado">Sábado</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted">Dias não marcados serão considerados folga. Faturamento em dias de folga conta como extra!</small>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary-custom w-100">
+                                <i class="bi bi-save"></i> Salvar Configurações
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Resumo das Configurações -->
+                <div class="card card-custom">
+                    <div class="card-header bg-transparent">
+                        <h6><i class="bi bi-info-circle"></i> Resumo das Configurações</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="resumoConfiguracoes">
+                            <p class="text-muted">Configure suas metas e dias de trabalho para ver o resumo aqui.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Dados em localStorage
+        let contas = JSON.parse(localStorage.getItem('uberFinanceContas')) || [];
+        let registrosDiarios = JSON.parse(localStorage.getItem('uberFinanceRegistros')) || [];
+        let configuracoes = JSON.parse(localStorage.getItem('uberFinanceConfiguracoes')) || {
+            metaDiariaMinima: 150,
+            diasTrabalho: [1, 2, 3, 4, 5] // Segunda a sexta por padrão
+        };
+        
+        let mesAtualCalendario = new Date().getMonth();
+        let anoAtualCalendario = new Date().getFullYear();
+
+        // Função para mostrar abas
+        function mostrarAba(abaId) {
+            // Esconder todas as abas
+            document.querySelectorAll('.tab-pane').forEach(aba => {
+                aba.classList.remove('show', 'active');
+            });
+            
+            // Remover classe active de todos os links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Mostrar aba selecionada
+            document.getElementById(abaId).classList.add('show', 'active');
+            
+            // Marcar link como ativo
+            event.target.classList.add('active');
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Definir data atual nos formulários
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('dataConta').value = hoje;
+            document.getElementById('dataDiario').value = hoje;
+            
+            preencherMesesDashboard();
+            carregarConfiguracoes();
+            atualizarDashboard();
+            gerarCalendario();
+            carregarHistoricoDiario();
+        });
+
+        // Formulário de contas
+        document.getElementById('formConta').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const conta = {
+                id: Date.now(),
+                tipo: document.getElementById('tipoConta').value,
+                descricao: document.getElementById('descricaoConta').value,
+                valor: parseFloat(document.getElementById('valorConta').value),
+                data: document.getElementById('dataConta').value,
+                pago: false
+            };
+            
+            contas.push(conta);
+            localStorage.setItem('uberFinanceContas', JSON.stringify(contas));
+            
+            this.reset();
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('dataConta').value = hoje;
+            
+            atualizarDashboard();
+            gerarCalendario();
+            
+            alert('Conta lançada com sucesso!');
+        });
+
+        // Formulário diário
+        document.getElementById('formDiario').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const registro = {
+                id: Date.now(),
+                data: document.getElementById('dataDiario').value,
+                faturamento: parseFloat(document.getElementById('faturamentoDiario').value),
+                gasolina: parseFloat(document.getElementById('gasolinaDiario').value),
+                kmRodados: parseFloat(document.getElementById('kmRodados').value),
+                observacoes: document.getElementById('observacoesDiario').value
+            };
+            
+            // Verificar se já existe registro para esta data
+            const indiceExistente = registrosDiarios.findIndex(r => r.data === registro.data);
+            if (indiceExistente >= 0) {
+                registrosDiarios[indiceExistente] = registro;
+            } else {
+                registrosDiarios.push(registro);
+            }
+            
+            localStorage.setItem('uberFinanceRegistros', JSON.stringify(registrosDiarios));
+            
+            this.reset();
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('dataDiario').value = hoje;
+            
+            atualizarDashboard();
+            carregarHistoricoDiario();
+            gerarCalendario();
+            
+            alert('Registro salvo com sucesso!');
+        });
+
+        // Formulário de configurações
+        document.getElementById('formConfiguracoes').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const metaDiariaMinima = parseFloat(document.getElementById('metaDiariaMinima').value) || 150;
+            const diasTrabalho = [];
+            
+            // Coletar dias selecionados
+            ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'].forEach((dia, index) => {
+                if (document.getElementById(dia).checked) {
+                    diasTrabalho.push(index);
+                }
+            });
+            
+            configuracoes = {
+                metaDiariaMinima: metaDiariaMinima,
+                diasTrabalho: diasTrabalho
+            };
+            
+            localStorage.setItem('uberFinanceConfiguracoes', JSON.stringify(configuracoes));
+            atualizarResumoConfiguracoes();
+            atualizarDashboard();
+            
+            alert('Configurações salvas com sucesso!');
+        });
+
+        function atualizarDashboard() {
+            const mesSelecionado = document.getElementById('mesDashboard').value;
+            let inicioMes, fimMes, hoje;
+            
+            if (mesSelecionado) {
+                const [ano, mes] = mesSelecionado.split('-').map(Number);
+                inicioMes = new Date(ano, mes - 1, 1);
+                fimMes = new Date(ano, mes, 0);
+                hoje = new Date();
+            } else {
+                hoje = new Date();
+                inicioMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
+                fimMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+            }
+            
+            const hojeStr = hoje.toISOString().split('T')[0];
+            
+            // Calcular faturamento do mês
+            const faturamentoMes = registrosDiarios
+                .filter(r => {
+                    const dataReg = new Date(r.data);
+                    return dataReg >= inicioMes && dataReg <= fimMes;
+                })
+                .reduce((total, r) => total + r.faturamento, 0);
+            
+            // Calcular gastos de combustível do mês
+            const gastosCombustivel = registrosDiarios
+                .filter(r => {
+                    const dataReg = new Date(r.data);
+                    return dataReg >= inicioMes && dataReg <= fimMes;
+                })
+                .reduce((total, r) => total + r.gasolina, 0);
+            
+            // Calcular total de km rodados no mês
+            const totalKmMes = registrosDiarios
+                .filter(r => {
+                    const dataReg = new Date(r.data);
+                    return dataReg >= inicioMes && dataReg <= fimMes;
+                })
+                .reduce((total, r) => total + (r.kmRodados || 0), 0);
+            
+            // Calcular custo por km
+            const custoPorKm = totalKmMes > 0 ? gastosCombustivel / totalKmMes : 0;
+            
+            // Calcular contas pendentes e atrasadas
+            const contasPendentes = contas
+                .filter(c => c.tipo === 'pagar' && !c.pago)
+                .reduce((total, c) => total + c.valor, 0);
+            
+            const contasAtrasadas = contas
+                .filter(c => c.tipo === 'pagar' && !c.pago && c.data < hojeStr);
+            
+            // Calcular gastos realizados
+            const gastosRealizados = contas
+                .filter(c => c.tipo === 'gasto')
+                .reduce((total, c) => total + c.valor, 0);
+            
+            // Calcular contas pagas e recebidas
+            const contasPagas = contas
+                .filter(c => c.tipo === 'pagar' && c.pago)
+                .reduce((total, c) => total + c.valor, 0);
+                
+            const contasRecebidas = contas
+                .filter(c => c.tipo === 'receber' && c.recebido)
+                .reduce((total, c) => total + c.valor, 0);
+            
+            // Saldo atual (faturamento + contas recebidas - gastos - contas pagas)
+            const saldoAtual = faturamentoMes + contasRecebidas - gastosCombustivel - gastosRealizados - contasPagas;
+            
+            // Calcular dias de trabalho restantes no mês
+            const diasTrabalhoRestantes = calcularDiasTrabalhoRestantes(hoje, fimMes);
+            const metaDiaria = diasTrabalhoRestantes > 0 ? 
+                Math.max((contasPendentes + 500) / diasTrabalhoRestantes, configuracoes.metaDiariaMinima) : 
+                configuracoes.metaDiariaMinima;
+            
+            // Calcular lucro líquido
+            const lucroLiquidoMes = faturamentoMes + contasRecebidas - gastosCombustivel - gastosRealizados - contasPagas;
+            
+            // Atualizar interface
+            document.getElementById('saldoAtual').textContent = `R$ ${saldoAtual.toFixed(2)}`;
+            document.getElementById('faturamentoMes').textContent = `R$ ${faturamentoMes.toFixed(2)}`;
+            document.getElementById('lucroLiquido').textContent = `R$ ${lucroLiquidoMes.toFixed(2)}`;
+            document.getElementById('contasPendentes').textContent = `R$ ${contasPendentes.toFixed(2)}`;
+            document.getElementById('custoPorKm').textContent = `R$ ${custoPorKm.toFixed(2)}`;
+            document.getElementById('totalKmMes').textContent = `${totalKmMes.toFixed(1)} km`;
+            document.getElementById('metaDiaria').textContent = metaDiaria.toFixed(2);
+            
+            // Mostrar alerta de contas atrasadas
+            if (contasAtrasadas.length > 0) {
+                let htmlAtrasadas = '';
+                contasAtrasadas.forEach(conta => {
+                    const diasAtraso = Math.floor((hoje - new Date(conta.data)) / (1000 * 60 * 60 * 24));
+                    htmlAtrasadas += `
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>${conta.descricao} - R$ ${conta.valor.toFixed(2)}</span>
+                            <small class="text-danger">${diasAtraso} dias de atraso</small>
+                        </div>
+                    `;
+                });
+                document.getElementById('listaAtrasadas').innerHTML = htmlAtrasadas;
+                document.getElementById('alertaAtrasadas').style.display = 'block';
+            } else {
+                document.getElementById('alertaAtrasadas').style.display = 'none';
+            }
+            
+            // Gerar relatório detalhado se um mês foi selecionado
+            if (mesSelecionado) {
+                gerarRelatorioDetalhado(mesSelecionado);
+            }
+        }
+
+        function gerarCalendario() {
+            const primeiroDia = new Date(anoAtualCalendario, mesAtualCalendario, 1);
+            const ultimoDia = new Date(anoAtualCalendario, mesAtualCalendario + 1, 0);
+            const diasNoMes = ultimoDia.getDate();
+            const diaSemanaInicio = primeiroDia.getDay();
+            const hoje = new Date().toISOString().split('T')[0];
+            
+            document.getElementById('mesAnoCalendario').textContent = 
+                primeiroDia.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+            
+            let html = '';
+            let dia = 1;
+            
+            for (let semana = 0; semana < 6; semana++) {
+                html += '<tr>';
+                for (let diaSemana = 0; diaSemana < 7; diaSemana++) {
+                    if (semana === 0 && diaSemana < diaSemanaInicio) {
+                        html += '<td class="calendar-day"></td>';
+                    } else if (dia > diasNoMes) {
+                        html += '<td class="calendar-day"></td>';
+                    } else {
+                        const dataAtual = `${anoAtualCalendario}-${String(mesAtualCalendario + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+                        const contasDoDia = contas.filter(c => c.data === dataAtual);
+                        const registroDoDia = registrosDiarios.find(r => r.data === dataAtual);
+                        
+                        // Adicionar classe especial se tem registro Uber
+                        const classeCalendario = registroDoDia ? 'calendar-day calendar-day-uber' : 'calendar-day';
+                        
+                        html += `<td class="${classeCalendario}" onclick="selecionarDia('${dataAtual}')">
+                            <div class="fw-bold">${dia}</div>`;
+                        
+                        // Mostrar faturamento Uber se existir
+                        if (registroDoDia) {
+                            const lucro = registroDoDia.faturamento - registroDoDia.gasolina;
+                            html += `<span class="conta-uber">
+                                <i class="bi bi-car-front"></i> R$ ${registroDoDia.faturamento.toFixed(2)}
+                                <br><small>Lucro: R$ ${lucro.toFixed(2)}</small>
+                            </span>`;
+                        }
+                        
+                        contasDoDia.forEach(conta => {
+                            let classe = '';
+                            if (conta.tipo === 'pagar') {
+                                if (conta.pago) {
+                                    classe = 'conta-paga';
+                                } else if (conta.data < hoje) {
+                                    classe = 'conta-atrasada';
+                                } else {
+                                    classe = 'conta-pagar';
+                                }
+                            } else if (conta.tipo === 'receber') {
+                                if (conta.recebido) {
+                                    classe = 'conta-paga';
+                                } else {
+                                    classe = 'conta-receber';
+                                }
+                            } else {
+                                classe = 'conta-pagar';
+                            }
+                            
+                            html += `<span class="${classe}">${conta.descricao} - R$ ${conta.valor.toFixed(2)}</span>`;
+                        });
+                        
+                        html += '</td>';
+                        dia++;
+                    }
+                }
+                html += '</tr>';
+                if (dia > diasNoMes) break;
+            }
+            
+            document.getElementById('calendarioBody').innerHTML = html;
+        }
+
+        function mudarMes(direcao) {
+            mesAtualCalendario += direcao;
+            if (mesAtualCalendario > 11) {
+                mesAtualCalendario = 0;
+                anoAtualCalendario++;
+            } else if (mesAtualCalendario < 0) {
+                mesAtualCalendario = 11;
+                anoAtualCalendario--;
+            }
+            gerarCalendario();
+        }
+
+        function carregarHistoricoDiario() {
+            const historico = registrosDiarios
+                .sort((a, b) => new Date(b.data) - new Date(a.data))
+                .slice(0, 5);
+            
+            let html = '';
+            historico.forEach(registro => {
+                // Corrigir problema de timezone na exibição da data
+                const dataPartes = registro.data.split('-');
+                const data = new Date(dataPartes[0], dataPartes[1] - 1, dataPartes[2]).toLocaleDateString('pt-BR');
+                const lucro = registro.faturamento - registro.gasolina;
+                const kmInfo = registro.kmRodados ? ` | Km: ${registro.kmRodados.toFixed(1)}` : '';
+                
+                html += `
+                    <div class="border-bottom pb-2 mb-2">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <strong>${data}</strong>
+                                <br>
+                                <small class="text-muted">
+                                    Faturamento: R$ ${registro.faturamento.toFixed(2)} | 
+                                    Gasolina: R$ ${registro.gasolina.toFixed(2)}${kmInfo}
+                                </small>
+                            </div>
+                            <span class="badge ${lucro >= 0 ? 'bg-success' : 'bg-danger'}">
+                                R$ ${lucro.toFixed(2)}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('historicoDiario').innerHTML = html || '<p class="text-muted">Nenhum registro encontrado</p>';
+        }
+
+        function preencherMesesDashboard() {
+            const select = document.getElementById('mesDashboard');
+            const hoje = new Date();
+            
+            // Adicionar mês atual como primeira opção e selecioná-lo
+            const mesAtual = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}`;
+            const textoAtual = hoje.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+            
+            const optionAtual = new Option(textoAtual, mesAtual);
+            select.add(optionAtual);
+            select.value = mesAtual; // Pré-selecionar o mês atual
+            
+            for (let i = 1; i < 12; i++) {
+                const data = new Date(hoje.getFullYear(), hoje.getMonth() - i, 1);
+                const valor = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
+                const texto = data.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+                
+                const option = new Option(texto, valor);
+                select.add(option);
+            }
+        }
+
+        function gerarRelatorioDetalhado(mesAno) {
+            if (!mesAno) return;
+            
+            const [ano, mes] = mesAno.split('-').map(Number);
+            const inicioMes = new Date(ano, mes - 1, 1);
+            const fimMes = new Date(ano, mes, 0);
+            
+            // Filtrar dados do mês
+            const registrosMes = registrosDiarios.filter(r => {
+                const dataReg = new Date(r.data);
+                return dataReg >= inicioMes && dataReg <= fimMes;
+            });
+            
+            const contasMes = contas.filter(c => {
+                const dataConta = new Date(c.data);
+                return dataConta >= inicioMes && dataConta <= fimMes;
+            });
+            
+            // Calcular totais
+            const totalFaturamento = registrosMes.reduce((total, r) => total + r.faturamento, 0);
+            const totalGasolina = registrosMes.reduce((total, r) => total + r.gasolina, 0);
+            const totalKmMes = registrosMes.reduce((total, r) => total + (r.kmRodados || 0), 0);
+            const totalGastos = contasMes.filter(c => c.tipo === 'gasto').reduce((total, c) => total + c.valor, 0);
+            const totalContasPagas = contasMes.filter(c => c.tipo === 'pagar').reduce((total, c) => total + c.valor, 0);
+            const lucroLiquido = totalFaturamento - totalGasolina - totalGastos - totalContasPagas;
+            const custoPorKmMes = totalKmMes > 0 ? totalGasolina / totalKmMes : 0;
+            
+            const html = `
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="card bg-success text-white mb-3">
+                            <div class="card-body text-center">
+                                <h5>Faturamento Total</h5>
+                                <h3>R$ ${totalFaturamento.toFixed(2)}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="card bg-warning text-white mb-3">
+                            <div class="card-body text-center">
+                                <h5>Gastos Gasolina</h5>
+                                <h3>R$ ${totalGasolina.toFixed(2)}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="card bg-danger text-white mb-3">
+                            <div class="card-body text-center">
+                                <h5>Outros Gastos</h5>
+                                <h3>R$ ${(totalGastos + totalContasPagas).toFixed(2)}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="card ${lucroLiquido >= 0 ? 'bg-primary' : 'bg-danger'} text-white mb-3">
+                            <div class="card-body text-center">
+                                <h5>Lucro Líquido</h5>
+                                <h3>R$ ${lucroLiquido.toFixed(2)}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h6>Resumo do Período</h6>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Dias trabalhados:</span>
+                            <strong>${registrosMes.length} dias</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Média diária faturamento:</span>
+                            <strong>R$ ${registrosMes.length > 0 ? (totalFaturamento / registrosMes.length).toFixed(2) : '0,00'}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Média diária gasolina:</span>
+                            <strong>R$ ${registrosMes.length > 0 ? (totalGasolina / registrosMes.length).toFixed(2) : '0,00'}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Lucro médio por dia:</span>
+                            <strong>R$ ${registrosMes.length > 0 ? (lucroLiquido / registrosMes.length).toFixed(2) : '0,00'}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total Km rodados:</span>
+                            <strong>${totalKmMes.toFixed(1)} km</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Custo por Km:</span>
+                            <strong>R$ ${custoPorKmMes.toFixed(2)}</strong>
+                        </li>
+                    </ul>
+                </div>
+            `;
+            
+            document.getElementById('relatorioContent').innerHTML = html;
+        }
+
+        function selecionarDia(data) {
+            // Remover seleção anterior
+            document.querySelectorAll('.calendar-day').forEach(td => {
+                td.classList.remove('selected');
+            });
+            
+            // Selecionar dia atual
+            event.target.closest('.calendar-day').classList.add('selected');
+            
+            const contasDoDia = contas.filter(c => c.data === data && (c.tipo === 'pagar' || c.tipo === 'receber'));
+            const dataFormatada = new Date(data).toLocaleDateString('pt-BR');
+            
+            document.getElementById('dataSelecionada').textContent = dataFormatada;
+            
+            if (contasDoDia.length > 0) {
+                let html = '';
+                contasDoDia.forEach(conta => {
+                    const hoje = new Date().toISOString().split('T')[0];
+                    let statusClass, statusText, botaoAcao;
+                    
+                    if (conta.tipo === 'pagar') {
+                        const isAtrasada = conta.data < hoje && !conta.pago;
+                        statusClass = conta.pago ? 'success' : (isAtrasada ? 'danger' : 'warning');
+                        statusText = conta.pago ? 'Paga' : (isAtrasada ? 'Em Atraso' : 'Pendente');
+                        
+                        botaoAcao = !conta.pago ? `
+                            <button class="btn btn-success btn-sm me-1" onclick="marcarComoPaga(${conta.id})">
+                                <i class="bi bi-check"></i> Pagar
+                            </button>
+                        ` : `
+                            <button class="btn btn-outline-secondary btn-sm me-1" onclick="marcarComoPendente(${conta.id})">
+                                <i class="bi bi-arrow-counterclockwise"></i> Desfazer
+                            </button>
+                        `;
+                    } else if (conta.tipo === 'receber') {
+                        statusClass = conta.recebido ? 'success' : 'info';
+                        statusText = conta.recebido ? 'Recebida' : 'A Receber';
+                        
+                        botaoAcao = !conta.recebido ? `
+                            <button class="btn btn-success btn-sm me-1" onclick="marcarComoRecebida(${conta.id})">
+                                <i class="bi bi-cash"></i> Receber
+                            </button>
+                        ` : `
+                            <button class="btn btn-outline-secondary btn-sm me-1" onclick="marcarComoPendente(${conta.id})">
+                                <i class="bi bi-arrow-counterclockwise"></i> Desfazer
+                            </button>
+                        `;
+                    }
+                    
+                    html += `
+                        <div class="card mb-2">
+                            <div class="card-body p-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">${conta.descricao}</h6>
+                                        <p class="mb-1 text-muted">R$ ${conta.valor.toFixed(2)}</p>
+                                        <span class="badge bg-${statusClass}">${statusText}</span>
+                                        <span class="badge bg-secondary ms-1">${conta.tipo === 'pagar' ? 'A Pagar' : 'A Receber'}</span>
+                                    </div>
+                                    <div>
+                                        ${botaoAcao}
+                                        <button class="btn btn-danger btn-sm" onclick="excluirConta(${conta.id})">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                document.getElementById('listaContasDia').innerHTML = html;
+                document.getElementById('contasDoDia').style.display = 'block';
+            } else {
+                document.getElementById('listaContasDia').innerHTML = '<p class="text-muted">Nenhuma conta para este dia.</p>';
+                document.getElementById('contasDoDia').style.display = 'block';
+            }
+        }
+
+        function marcarComoPaga(contaId) {
+            const conta = contas.find(c => c.id === contaId);
+            if (conta) {
+                conta.pago = true;
+                localStorage.setItem('uberFinanceContas', JSON.stringify(contas));
+                atualizarDashboard();
+                gerarCalendario();
+                // Recarregar a lista do dia selecionado
+                const dataSelecionada = document.getElementById('dataSelecionada').textContent;
+                if (dataSelecionada) {
+                    const dataISO = new Date(dataSelecionada.split('/').reverse().join('-')).toISOString().split('T')[0];
+                    selecionarDia(dataISO);
+                }
+            }
+        }
+
+        function marcarComoRecebida(contaId) {
+            const conta = contas.find(c => c.id === contaId);
+            if (conta) {
+                conta.recebido = true;
+                localStorage.setItem('uberFinanceContas', JSON.stringify(contas));
+                atualizarDashboard();
+                gerarCalendario();
+                // Recarregar a lista do dia selecionado
+                const dataSelecionada = document.getElementById('dataSelecionada').textContent;
+                if (dataSelecionada) {
+                    const dataISO = new Date(dataSelecionada.split('/').reverse().join('-')).toISOString().split('T')[0];
+                    selecionarDia(dataISO);
+                }
+            }
+        }
+
+        function marcarComoPendente(contaId) {
+            const conta = contas.find(c => c.id === contaId);
+            if (conta) {
+                if (conta.tipo === 'pagar') {
+                    conta.pago = false;
+                } else if (conta.tipo === 'receber') {
+                    conta.recebido = false;
+                }
+                localStorage.setItem('uberFinanceContas', JSON.stringify(contas));
+                atualizarDashboard();
+                gerarCalendario();
+                // Recarregar a lista do dia selecionado
+                const dataSelecionada = document.getElementById('dataSelecionada').textContent;
+                if (dataSelecionada) {
+                    const dataISO = new Date(dataSelecionada.split('/').reverse().join('-')).toISOString().split('T')[0];
+                    selecionarDia(dataISO);
+                }
+            }
+        }
+
+        function excluirConta(contaId) {
+            if (confirm('Tem certeza que deseja excluir esta conta?')) {
+                contas = contas.filter(c => c.id !== contaId);
+                localStorage.setItem('uberFinanceContas', JSON.stringify(contas));
+                atualizarDashboard();
+                gerarCalendario();
+                // Recarregar a lista do dia selecionado
+                const dataSelecionada = document.getElementById('dataSelecionada').textContent;
+                if (dataSelecionada) {
+                    const dataISO = new Date(dataSelecionada.split('/').reverse().join('-')).toISOString().split('T')[0];
+                    selecionarDia(dataISO);
+                }
+            }
+        }
+
+        function carregarConfiguracoes() {
+            // Carregar meta diária
+            document.getElementById('metaDiariaMinima').value = configuracoes.metaDiariaMinima;
+            
+            // Carregar dias de trabalho
+            ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'].forEach((dia, index) => {
+                document.getElementById(dia).checked = configuracoes.diasTrabalho.includes(index);
+            });
+            
+            atualizarResumoConfiguracoes();
+        }
+
+        function atualizarResumoConfiguracoes() {
+            const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+            const diasTrabalhoTexto = configuracoes.diasTrabalho.map(dia => diasSemana[dia]).join(', ');
+            
+            const hoje = new Date();
+            const fimMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0);
+            const diasTrabalhoRestantes = calcularDiasTrabalhoRestantes(hoje, fimMes);
+            const diasTrabalhoTotalMes = calcularDiasTrabalhoNoMes(hoje.getFullYear(), hoje.getMonth());
+            
+            const html = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Meta Diária Mínima</h6>
+                        <p class="text-primary fs-5 fw-bold">R$ ${configuracoes.metaDiariaMinima.toFixed(2)}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Dias de Trabalho</h6>
+                        <p class="text-info">${diasTrabalhoTexto || 'Nenhum dia selecionado'}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Dias de Trabalho no Mês</h6>
+                        <p class="text-success">${diasTrabalhoTotalMes} dias</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Dias Restantes</h6>
+                        <p class="text-warning">${diasTrabalhoRestantes} dias</p>
+                    </div>
+                </div>
+                <div class="alert alert-info">
+                    <small><i class="bi bi-info-circle"></i> Meta mensal estimada: R$ ${(configuracoes.metaDiariaMinima * diasTrabalhoTotalMes).toFixed(2)}</small>
+                </div>
+            `;
+            
+            document.getElementById('resumoConfiguracoes').innerHTML = html;
+        }
+
+        function calcularDiasTrabalhoRestantes(dataInicio, dataFim) {
+            let count = 0;
+            const atual = new Date(dataInicio);
+            atual.setDate(atual.getDate() + 1); // Começar do próximo dia
+            
+            while (atual <= dataFim) {
+                if (configuracoes.diasTrabalho.includes(atual.getDay())) {
+                    count++;
+                }
+                atual.setDate(atual.getDate() + 1);
+            }
+            
+            return count;
+        }
+
+        function calcularDiasTrabalhoNoMes(ano, mes) {
+            let count = 0;
+            const primeiroDia = new Date(ano, mes, 1);
+            const ultimoDia = new Date(ano, mes + 1, 0);
+            const atual = new Date(primeiroDia);
+            
+            while (atual <= ultimoDia) {
+                if (configuracoes.diasTrabalho.includes(atual.getDay())) {
+                    count++;
+                }
+                atual.setDate(atual.getDate() + 1);
+            }
+            
+            return count;
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98f2213684bd3472',t:'MTc2MDU2MDgwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
