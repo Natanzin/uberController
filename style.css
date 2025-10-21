@@ -1,0 +1,422 @@
+   body {
+     box-sizing: border-box;
+     background: #2c3e50;
+     min-height: 100%;
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   }
+
+   html,
+   body {
+     height: 100%;
+   }
+
+
+
+   .card-custom {
+     border: none;
+     border-radius: 15px;
+     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+     backdrop-filter: blur(10px);
+     background: white;
+     margin-bottom: 20px;
+   }
+
+   .btn-primary-custom {
+     background: linear-gradient(45deg, #34495e, #2c3e50);
+     border: none;
+     border-radius: 25px;
+     padding: 12px 30px;
+     font-weight: 600;
+     transition: all 0.3s ease;
+     color: white;
+   }
+
+   .btn-primary-custom:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 5px 15px rgba(52, 73, 94, 0.4);
+     background: linear-gradient(45deg, #2c3e50, #34495e);
+   }
+
+   .calendar-day {
+     min-height: 100px;
+     border: 1px solid #e9ecef;
+     padding: 5px;
+     font-size: 0.8rem;
+   }
+
+   .calendar-day:hover {
+     background-color: #f8f9fa;
+   }
+
+   .conta-pagar {
+     background-color: #ffe6e6;
+     color: #d63384;
+     padding: 2px 6px;
+     border-radius: 10px;
+     font-size: 0.7rem;
+     margin: 1px 0;
+     display: block;
+   }
+
+   .conta-receber {
+     background-color: #e6f7e6;
+     color: #198754;
+     padding: 2px 6px;
+     border-radius: 10px;
+     font-size: 0.7rem;
+     margin: 1px 0;
+     display: block;
+   }
+
+   .conta-paga {
+     background-color: #d4edda;
+     color: #155724;
+     padding: 2px 6px;
+     border-radius: 10px;
+     font-size: 0.7rem;
+     margin: 1px 0;
+     display: block;
+     text-decoration: line-through;
+   }
+
+   .conta-atrasada {
+     background-color: #f8d7da;
+     color: #721c24;
+     padding: 2px 6px;
+     border-radius: 10px;
+     font-size: 0.7rem;
+     margin: 1px 0;
+     display: block;
+     border: 2px solid #dc3545;
+     animation: pulse 2s infinite;
+   }
+
+   .conta-uber {
+     background-color: #e3f2fd;
+     color: #1976d2;
+     padding: 2px 6px;
+     border-radius: 10px;
+     font-size: 0.7rem;
+     margin: 1px 0;
+     display: block;
+     border: 1px solid #1976d2;
+     font-weight: bold;
+   }
+
+   .conta-reserva-entrada {
+     background-color: #e8f5e8;
+     color: #2e7d32;
+     padding: 2px 6px;
+     border-radius: 10px;
+     font-size: 0.7rem;
+     margin: 1px 0;
+     display: block;
+     border: 1px solid #4caf50;
+   }
+
+   .conta-reserva-saida {
+     background-color: #fff3e0;
+     color: #f57c00;
+     padding: 2px 6px;
+     border-radius: 10px;
+     font-size: 0.7rem;
+     margin: 1px 0;
+     display: block;
+     border: 1px solid #ff9800;
+   }
+
+   .calendar-day-uber {
+     background-color: #e3f2fd !important;
+     border: 2px solid #1976d2 !important;
+   }
+
+   @keyframes pulse {
+     0% {
+       opacity: 1;
+     }
+
+     50% {
+       opacity: 0.7;
+     }
+
+     100% {
+       opacity: 1;
+     }
+   }
+
+   .calendar-day {
+     cursor: pointer;
+   }
+
+   .calendar-day:hover {
+     background-color: #e3f2fd !important;
+   }
+
+   .calendar-day.selected {
+     background-color: #bbdefb !important;
+   }
+
+   .calendar-day-folga {
+     background-color: #fff3e0 !important;
+     border: 2px solid #ff9800 !important;
+   }
+
+   .folga-programada {
+     background-color: #fff3e0;
+     color: #f57c00;
+     padding: 2px 6px;
+     border-radius: 10px;
+     font-size: 0.7rem;
+     margin: 1px 0;
+     display: block;
+     border: 1px solid #ff9800;
+     font-weight: bold;
+   }
+
+   .meta-alert {
+     background: linear-gradient(45deg, #e74c3c, #f39c12);
+     color: white;
+     border-radius: 15px;
+     padding: 15px;
+     margin: 15px 0;
+     font-weight: bold;
+     text-align: center;
+     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+   }
+
+   .dashboard-card {
+     background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+     color: white;
+     border-radius: 15px;
+     padding: 20px;
+     margin-bottom: 15px;
+     text-align: center;
+     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+   }
+
+   .form-control {
+     border-radius: 10px;
+     border: 2px solid #e9ecef;
+     padding: 12px 15px;
+   }
+
+   .form-control:focus {
+     border-color: #34495e;
+     box-shadow: 0 0 0 0.2rem rgba(52, 73, 94, 0.25);
+   }
+
+   .nav-pills .nav-link {
+     border-radius: 25px;
+     margin: 0 5px;
+     font-weight: 600;
+   }
+
+   .nav-pills .nav-link {
+     color: #34495e;
+   }
+
+   .nav-pills .nav-link.active {
+     background: linear-gradient(45deg, #34495e, #2c3e50);
+     color: white;
+   }
+
+   /* Estilos da tela de login */
+   .login-container {
+     min-height: 100vh;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+   }
+
+   .login-card {
+     background: white;
+     border-radius: 20px;
+     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+     padding: 40px;
+     width: 100%;
+     max-width: 400px;
+     backdrop-filter: blur(10px);
+   }
+
+   .login-logo {
+     text-align: center;
+     margin-bottom: 30px;
+   }
+
+   .login-logo i {
+     font-size: 4rem;
+     color: #34495e;
+     margin-bottom: 15px;
+   }
+
+   .login-logo h2 {
+     color: #2c3e50;
+     font-weight: bold;
+     margin: 0;
+   }
+
+   .login-form .form-control {
+     border-radius: 15px;
+     border: 2px solid #e9ecef;
+     padding: 15px 20px;
+     font-size: 1.1rem;
+     margin-bottom: 20px;
+   }
+
+   .login-form .form-control:focus {
+     border-color: #34495e;
+     box-shadow: 0 0 0 0.2rem rgba(52, 73, 94, 0.25);
+   }
+
+   .login-btn {
+     background: linear-gradient(45deg, #34495e, #2c3e50);
+     border: none;
+     border-radius: 15px;
+     padding: 15px;
+     font-size: 1.1rem;
+     font-weight: 600;
+     color: white;
+     width: 100%;
+     transition: all 0.3s ease;
+   }
+
+   .login-btn:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 8px 25px rgba(52, 73, 94, 0.4);
+     background: linear-gradient(45deg, #2c3e50, #34495e);
+   }
+
+   .login-error {
+     background: #f8d7da;
+     color: #721c24;
+     border: 1px solid #f5c6cb;
+     border-radius: 10px;
+     padding: 12px;
+     margin-bottom: 20px;
+     text-align: center;
+   }
+
+   .sistema-principal {
+     display: none;
+   }
+
+   .sistema-principal.logado {
+     display: block;
+   }
+
+   /* Estilos dos Modais Customizados */
+   .modal-overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background: rgba(0, 0, 0, 0.7);
+     backdrop-filter: blur(5px);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     z-index: 9999;
+     opacity: 0;
+     visibility: hidden;
+     transition: all 0.3s ease;
+   }
+
+   .modal-overlay.show {
+     opacity: 1;
+     visibility: visible;
+   }
+
+   .modal-custom {
+     background: white;
+     border-radius: 20px;
+     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+     max-width: 500px;
+     width: 90%;
+     max-height: 80vh;
+     overflow-y: auto;
+     transform: scale(0.7) translateY(-50px);
+     transition: all 0.3s ease;
+   }
+
+   .modal-overlay.show .modal-custom {
+     transform: scale(1) translateY(0);
+   }
+
+   .modal-header-custom {
+     padding: 25px 30px 15px;
+     border-bottom: 1px solid #e9ecef;
+     text-align: center;
+   }
+
+   .modal-body-custom {
+     padding: 20px 30px;
+     text-align: center;
+   }
+
+   .modal-footer-custom {
+     padding: 15px 30px 25px;
+     display: flex;
+     gap: 10px;
+     justify-content: center;
+   }
+
+   .modal-icon {
+     font-size: 3rem;
+     margin-bottom: 15px;
+   }
+
+   .modal-icon.success {
+     color: #28a745;
+   }
+
+   .modal-icon.error {
+     color: #dc3545;
+   }
+
+   .modal-icon.warning {
+     color: #ffc107;
+   }
+
+   .modal-icon.info {
+     color: #17a2b8;
+   }
+
+   .modal-icon.question {
+     color: #6f42c1;
+   }
+
+   .btn-modal {
+     border-radius: 15px;
+     padding: 12px 25px;
+     font-weight: 600;
+     border: none;
+     transition: all 0.3s ease;
+     min-width: 100px;
+   }
+
+   .btn-modal:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+   }
+
+   .btn-modal.primary {
+     background: linear-gradient(45deg, #34495e, #2c3e50);
+     color: white;
+   }
+
+   .btn-modal.success {
+     background: linear-gradient(45deg, #28a745, #20c997);
+     color: white;
+   }
+
+   .btn-modal.danger {
+     background: linear-gradient(45deg, #dc3545, #e74c3c);
+     color: white;
+   }
+
+   .btn-modal.secondary {
+     background: #6c757d;
+     color: white;
+   }
